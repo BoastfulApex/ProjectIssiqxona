@@ -6,6 +6,13 @@ class Product(models.Model):
     text = models.CharField(max_length=500, null=True, blank=True)
     image = models.ImageField(null=True, blank=True)
 
+    @property
+    def ImageURL(self):
+        if self.image.url:
+            return self.image.url
+        else:
+            return ''
+
 
 class Question(models.Model):
     question = models.TextField(max_length=500, null=True, blank=True)
@@ -16,3 +23,10 @@ class Stories(models.Model):
     name = models.CharField(max_length=250, null=True, blank=True)
     text = models.CharField(max_length=500, null=True, blank=True)
     image = models.ImageField(null=True, blank=True)
+
+    @property
+    def ImageURL(self):
+        if self.image.url:
+            return self.image.url
+        else:
+            return ''
