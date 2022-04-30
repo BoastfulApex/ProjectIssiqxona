@@ -9,37 +9,51 @@ class ProductView(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
-    def list(self, request, *args, **kwargs):
-        products = []
-        for i in self.queryset:
-            s = {
-                "name": i.name,
-                'text': i.text,
-                'image': i.ImageURL
-            }
-            products.append(s)
-
-        return Response({'products': products})
-
 
 class QuestionView(viewsets.ModelViewSet):
-    queryset = Question.objects.all()
-    serializer_class = QuestionSerializer
+    queryset = FAQ.objects.all()
+    serializer_class = FAQSerializer
 
 
-class StoryView(viewsets.ModelViewSet):
-    queryset = Stories.objects.all()
-    serializer_class = StorySerializer
+class CategoryView(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
 
-    def list(self, request, *args, **kwargs):
-        list_story = self.queryset
-        story = []
-        for i in list_story:
-            s = {
-                "name": i.name,
-                'text': i.text,
-                'image': i.ImageURL
+
+class LinkView(viewsets.ModelViewSet):
+    queryset = Youtube.objects.all()
+    serializer_class = LinkSerializer
+
+
+class BlogView(viewsets.ModelViewSet):
+    queryset = Blog.objects.all()
+    serializer_class = BlogSerializer
+
+
+class ImageView(viewsets.ModelViewSet):
+    queryset = BlogImage.objects.all()
+    serializer_class = ImageSerializer
+
+
+class PartnerView(viewsets.ModelViewSet):
+    queryset = Partner.objects.all()
+    serializer_class = PartnerSerializer
+
+
+class ImageByBlog(viewsets.ModelViewSet):
+    queryset = BlogImage.objects.all()
+    serializer_class = ImageSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        id = kwargs['pk']
+        images = []
+        blogs = self.queryset.filter(blog_id=id)
+        serializer = self.get_serializer(blogs)
+        for blog in blogs:
+            kurs = {
+                "id": blog.id,
+                'Blog': blog.blog.id,
+                'image': blog.ImageURL,
             }
-            story.append(s)
-
-        return Response({'stories': story})
+            images.append(kurs)
+        return Response({"Images": images})
